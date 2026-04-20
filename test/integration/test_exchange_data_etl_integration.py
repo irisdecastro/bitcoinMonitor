@@ -20,8 +20,7 @@ class TestBitcoinMonitor:
         with WarehouseConnection(get_warehouse_creds()).managed_cursor(
             cursor_factory=psycopg2.extras.DictCursor
         ) as curr:
-            curr.execute(
-                """SELECT id,
+            curr.execute("""SELECT id,
                         name,
                         rank,
                         percenttotalvolume,
@@ -31,8 +30,7 @@ class TestBitcoinMonitor:
                         exchangeurl,
                         updated_unix_millis,
                         updated_utc
-                        FROM bitcoin.exchange;"""
-            )
+                        FROM bitcoin.exchange;""")
             table_data = [dict(r) for r in curr.fetchall()]
         return table_data
 

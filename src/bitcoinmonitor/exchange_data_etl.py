@@ -21,14 +21,47 @@ def get_utc_from_unix_time(
 
 
 def get_exchange_data() -> List[Dict[str, Any]]:
-    url = "https://api.coincap.io/v2/exchanges"
-    try:
-        r = requests.get(url)
-    except requests.ConnectionError as ce:
-        logging.error(f"There was an error with the request, {ce}")
-        sys.exit(1)
-    return r.json().get("data", [])
+    # url = "https://api.coincap.io/v2/exchanges"
+    url = "https://api.coingecko.com/api/v3/exchanges"
+    # try:
+        # r = requests.get(url)
+    # except requests.ConnectionError as ce:
+    #     logging.error(f"There was an error with the request, {ce}")
+    #     sys.exit(1)
+    r = requests.get(url, timeout=10)
+    r.raise_for_status()
+    # return r.json().get("data", [])
+    data = r.json()
+    return data if isinstance(data, list) else data.get("data", [])
 
+
+# def _get_exchange_insert_query() -> str:
+#     return """
+#     INSERT INTO bitcoin.exchange (
+#         id,
+#         name,
+#         rank,
+#         percenttotalvolume,
+#         volumeusd,
+#         tradingpairs,
+#         socket,
+#         exchangeurl,
+#         updated_unix_millis,
+#         updated_utc
+#     )
+#     VALUES (
+#         %(exchangeId)s,
+#         %(name)s,
+#         %(rank)s,
+#         %(percentTotalVolume)s,
+#         %(volumeUsd)s,
+#         %(tradingPairs)s,
+#         %(socket)s,
+#         %(exchangeUrl)s,
+#         %(updated)s,
+#         %(update_dt)s
+#     );
+#     """
 
 def _get_exchange_insert_query() -> str:
     return """
@@ -36,25 +69,15 @@ def _get_exchange_insert_query() -> str:
         id,
         name,
         rank,
-        percenttotalvolume,
         volumeusd,
-        tradingpairs,
-        socket,
-        exchangeurl,
-        updated_unix_millis,
-        updated_utc
+        exchangeurl
     )
     VALUES (
-        %(exchangeId)s,
+        %(id)s,
         %(name)s,
-        %(rank)s,
-        %(percentTotalVolume)s,
-        %(volumeUsd)s,
-        %(tradingPairs)s,
-        %(socket)s,
-        %(exchangeUrl)s,
-        %(updated)s,
-        %(update_dt)s
+        NULL,
+        %(trade_volume_24h_btc)s,
+        %(url)s
     );
     """
 
