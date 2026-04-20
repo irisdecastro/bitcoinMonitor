@@ -110,7 +110,8 @@ sudo chmod 666 /var/run/docker.sock
 sudo apt install make
 
 echo 'Clone git repo to EC2'
-cd /home/ubuntu && git clone https://github.com/josephmachado/bitcoinMonitor.git
+# cd /home/ubuntu && git clone https://github.com/josephmachado/bitcoinMonitor.git
+cd /home/ubuntu && git clone https://github.com/irisdecastro/bitcoinMonitor.git
 
 echo 'CD to bitcoinMonitor directory'
 cd bitcoinMonitor
