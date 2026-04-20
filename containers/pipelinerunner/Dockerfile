@@ -1,11 +1,17 @@
-FROM python:3.9.5
+# FROM python:3.9.5
+FROM python:3.11-slim
 
 # set up location of code
 WORKDIR /code
 ENV PYTHONPATH=/code/src
 
 # install cron
-RUN apt-get update && apt-get install cron -y
+# RUN apt-get update && apt-get install cron -y
+RUN apt-get update && apt-get install -y \
+    cron \
+    gcc \
+    libpq-dev \
+    build-essential
 
 # install python requirements
 ADD ./containers/pipelinerunner/requirements.txt requirements.txt
